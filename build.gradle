@@ -1,26 +1,49 @@
 buildscript {
-    apply from: '.mdk/buildscript.gradle', to: buildscript
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+repositories {
+
 }
 
-apply from: '.mdk/project.gradle'
+group = project.group
+version = project.version
+archivesBaseName = project.name
 
-litemod {
-    json {
-        name = project.name
-        displayName = project.displayName
-        description = project.moddescription
-        author = 'Shadow_Hawk'
-		mcversion = project.mcVersion
+minecraft {
+    version = "${project.mcpVersion}-${project.fmlVersion}"
+    mappings = project.mappings
+    runDir = 'run'
+}
+
+dependencies {
+
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+    
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
     }
 }
 
 jar {
-    from litemod.outputs
-
-    manifest.mainAttributes (
-        'Built-By': System.properties['user.name'],
-        'Created-By': System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
-        'Implementation-Title': project.name,
-        'Implementation-Version': project.mcVersion
-    )
+    manifest {
+    
+    }
 }

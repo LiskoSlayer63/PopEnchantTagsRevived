@@ -1,109 +1,35 @@
 package com.shadowhawk.popenchanttags;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.LangKey;
+import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
-import com.mumfrey.liteloader.core.LiteLoader;
-import com.mumfrey.liteloader.modconfig.ConfigPanel;
-import com.mumfrey.liteloader.modconfig.ConfigPanelHost;
-import com.shadowhawk.popenchanttags.LiteModPopEnchantTagsRevived;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-
-public class ConfigPopEnchantTags implements ConfigPanel{
+@Config(modid = ForgeModPopEnchantTagsRevived.MOD_ID)
+public class ConfigPopEnchantTags
+{
+	@LangKey("gui.popenchanttagsrevived.config.enabled")
+	public static boolean enabled = true;
 	
-	/** Line spacing, in points. */
-	private final static int SPACING = 24;
-	  
-	private GuiButton activeButton;
-	private GuiButton toggleTags;
-	private GuiButton toggleBooks;
-	//private GuiButton toggleApplicable;
-	private Minecraft minecraft;
-	private LiteModPopEnchantTagsRevived shell = LiteModPopEnchantTagsRevived.instance;
-	
+	@LangKey("gui.popenchanttagsrevived.config.show_books")
+	public static boolean showBooks = true;
 
-	@Override
-	public String getPanelTitle() {
+	
+	@Comment({
+	  "Enable debugging mode.",
+	  "(for development use only)"
+	})
+	@Name("Enable Debug")
+	@RequiresMcRestart
+	public static boolean DEBUG = false;
+	
+	
+	public static void sync()
+	{
+		ConfigManager.sync(ForgeModPopEnchantTagsRevived.MOD_ID, Config.Type.INSTANCE);
 		
-		return "Pop Enchant Tags Settings";
+		Logger.debug("Configuration changed!");
 	}
-
-	@Override
-	public int getContentHeight() {
-		return SPACING * 3;
-	}
-
-	@Override
-	public void onPanelShown(ConfigPanelHost host) {
-		minecraft = Minecraft.getMinecraft();
-	    int id = 0;
-	    int line = 0;
-	    toggleTags = new GuiButton(id++, 10, SPACING * line++, "Tags Enabled: " + shell.tagsVisible());
-	    toggleBooks = new GuiButton(id++, 10, SPACING * line++, "Book Enchants: " + shell.getBooks());
-	    //toggleApplicable = new GuiButton(id++, 10, SPACING * line++, "Super Secret Settings");
-	}
-
-	@Override
-	public void onPanelResize(ConfigPanelHost host) {}
-
-	@Override
-	public void onPanelHidden()
-	{
-		LiteLoader.getInstance().writeConfig(shell);
-	}
-
-	@Override
-	public void onTick(ConfigPanelHost host) {}
-
-	@Override
-	public void drawPanel(ConfigPanelHost host, int mouseX, int mouseY, float partialTicks) {
-		toggleTags.drawButton(minecraft, mouseX, mouseY, partialTicks);
-		toggleBooks.drawButton(minecraft, mouseX, mouseY, partialTicks);
-		//toggleApplicable.drawButton(minecraft, mouseX, mouseY);
-	}
-
-	@Override
-	public void mousePressed(ConfigPanelHost host, int mouseX, int mouseY, int mouseButton) {
-		if (toggleTags.mousePressed(minecraft, mouseX, mouseY))
-		{
-			activeButton = toggleTags;
-			shell.toggleTags();
-			toggleTags.displayString = ("Tags Enabled: "+ shell.tagsVisible());
-			toggleTags.playPressSound(minecraft.getSoundHandler());
-		} else if (toggleBooks.mousePressed(minecraft, mouseX, mouseY))
-		{
-			activeButton = toggleBooks;
-			shell.toggleBooks();
-			toggleBooks.displayString = ("Book Enchants: " + shell.getBooks());
-			toggleBooks.playPressSound(minecraft.getSoundHandler());
-		} /*else if (toggleApplicable.mousePressed(minecraft, mouseX, mouseY))
-		{
-			activeButton = toggleApplicable;
-			//shell.toggleApplicable();
-			toggleApplicable.displayString = ("Super Secret Settings");
-			toggleApplicable.playPressSound(minecraft.getSoundHandler());
-		}*/
-	}
-
-	@Override
-	public void mouseReleased(ConfigPanelHost host, int mouseX, int mouseY, int mouseButton)
-	{
-		if (activeButton != null) {
-		      activeButton.mouseReleased(mouseX, mouseY);
-		      activeButton = null;
-		    }
-	}
-
-	@Override
-	public void mouseMoved(ConfigPanelHost host, int mouseX, int mouseY) {}
-
-	@Override
-	public void keyPressed(ConfigPanelHost host, char keyChar, int keyCode)
-	{
-		if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Keyboard.KEY_RETURN) {
-		      host.close();
-		}
-	}
-
 }

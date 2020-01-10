@@ -11,10 +11,8 @@ import net.minecraft.nbt.NBTTagList;
 //import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.text.TextFormatting;
 
-public class PopEnchantTagsRenderer {
-
-	private boolean enabled = true;
-	private boolean showBooks = true;
+public class PopEnchantTagsRenderer 
+{
 	public static float remainingHighlightTicks;
     public static ItemStack highlightingItemStack;
     public static long ticks;
@@ -26,41 +24,21 @@ public class PopEnchantTagsRenderer {
         ticks = 0L;
     }
 	
-	public void toggleTags()
-	{
-		this.enabled = !this.enabled;
-	}
-	
 	public boolean tagsVisible()
 	{
-		return this.enabled;
-	}
-	
-	public void setVisible(boolean visible)
-	{
-		this.enabled = visible;
-	}
-	
-	public void toggleBooks()
-	{
-		this.showBooks = !this.showBooks;
+		return ConfigPopEnchantTags.enabled;
 	}
 	
 	public boolean getBooks()
 	{
-		return this.showBooks;
-	}
-	
-	public void setBooks(boolean visible)
-	{
-		this.showBooks = visible;
+		return ConfigPopEnchantTags.showBooks;
 	}
 	
 	public void render(int screenWidth, int screenHeight)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
 
-        if (mc.player != null && (enabled || showBooks))
+        if (mc.player != null && (ConfigPopEnchantTags.enabled || ConfigPopEnchantTags.showBooks))
         {
             ItemStack items = mc.player.inventory.getCurrentItem();
 
@@ -91,13 +69,13 @@ public class PopEnchantTagsRenderer {
                     }
 
                     NBTTagList tagList = null;
-                    if(enabled)
+                    if(ConfigPopEnchantTags.enabled)
                     {
                     	tagList = items.getEnchantmentTagList();
                     }
-                    if((items.getItem() instanceof ItemEnchantedBook) && showBooks)
+                    if((items.getItem() instanceof ItemEnchantedBook) && ConfigPopEnchantTags.showBooks)
                     {
-                    	tagList = ((ItemEnchantedBook)items.getItem()).getEnchantments(items);
+                    	tagList = ItemEnchantedBook.getEnchantments(items);
                     	color = TextFormatting.YELLOW;
                     	//keep for 1.8.9 updates
                     	//color = EnumChatFormatting.YELLOW;
@@ -183,9 +161,9 @@ public class PopEnchantTagsRenderer {
         }
 	}
 	
-	public void tick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock)
+	public void tick(Minecraft minecraft)
 	{
-		if (inGame && minecraft.player != null && clock)
+		if (!minecraft.isGamePaused() && minecraft.player != null)
         {
             ItemStack items = minecraft.player.inventory.getCurrentItem();
 
