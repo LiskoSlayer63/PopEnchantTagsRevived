@@ -7,8 +7,8 @@ import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.Name;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
-@Config(modid = ForgeModPopEnchantTagsRevived.MOD_ID)
-public class ConfigPopEnchantTags
+@Config(modid = PopEnchantTagsRevived.MOD_ID)
+public class PopEnchantTagsConfig
 {
 	@LangKey("gui.popenchanttagsrevived.config.enabled")
 	public static boolean enabled = true;
@@ -24,11 +24,11 @@ public class ConfigPopEnchantTags
 	@Name("Enable Debug")
 	@RequiresMcRestart
 	public static boolean DEBUG = false;
-	
+
 	
 	public static void sync()
 	{
-		ConfigManager.sync(ForgeModPopEnchantTagsRevived.MOD_ID, Config.Type.INSTANCE);
+		ConfigManager.sync(PopEnchantTagsRevived.MOD_ID, Config.Type.INSTANCE);
 		
 		Logger.debug("Configuration changed!");
 	}

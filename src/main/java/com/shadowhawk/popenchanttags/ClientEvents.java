@@ -10,36 +10,37 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@Mod.EventBusSubscriber(modid = ForgeModPopEnchantTagsRevived.MOD_ID)
+@Mod.EventBusSubscriber(modid = PopEnchantTagsRevived.MOD_ID)
 public class ClientEvents 
 {
 	@SubscribeEvent
 	public static void onConfigChanged(final OnConfigChangedEvent event) 
 	{
-		if (event.getModID().equals(ForgeModPopEnchantTagsRevived.MOD_ID))
-			ConfigPopEnchantTags.sync();
+		if (event.getModID().equals(PopEnchantTagsRevived.MOD_ID))
+			PopEnchantTagsConfig.sync();
 	}
 	
 	@SubscribeEvent
 	public static void onRenderGameOverlay(RenderGameOverlayEvent.Post event) 
 	{
-		if (event.isCanceled() || !event.getType().equals(ElementType.ALL)) return;
+		if (event.isCanceled() || !Minecraft.isGuiEnabled() || !event.getType().equals(ElementType.ALL)) return;
 
-		ForgeModPopEnchantTagsRevived instance = ForgeModPopEnchantTagsRevived.instance;
+		PopEnchantTagsRevived instance = PopEnchantTagsRevived.instance;
 		ScaledResolution resolution = event.getResolution();
 
-    	instance.renderer.render(resolution.getScaledWidth(), resolution.getScaledHeight());
+		instance.renderer.render(resolution.getScaledWidth(), resolution.getScaledHeight());
 	}
 	
 	@SubscribeEvent
-	public static void onTick(TickEvent.ClientTickEvent event) 
+	public static void onClientTick(TickEvent.ClientTickEvent event) 
 	{
-		if (event.isCanceled()) return;
-
 		Minecraft minecraft = Minecraft.getMinecraft();
-		ForgeModPopEnchantTagsRevived instance = ForgeModPopEnchantTagsRevived.instance;
+		
+		if (event.isCanceled() || minecraft.isGamePaused()) return;
 
-    	instance.renderer.tick(minecraft);
+		PopEnchantTagsRevived instance = PopEnchantTagsRevived.instance;
+
+		instance.renderer.tick(minecraft);
 	}
 	
 	@SubscribeEvent
@@ -47,14 +48,23 @@ public class ClientEvents
 	{
 		Minecraft minecraft = Minecraft.getMinecraft();
 		
-		if (event.isCanceled() || minecraft.isGamePaused() || !Minecraft.isGuiEnabled()) return;
+		if (event.isCanceled() || minecraft.isGamePaused() || !Minecraft.isGuiEnabled() || !minecraft.inGameHasFocus) return;
 		
-        if (ForgeModPopEnchantTagsRevived.toggleTags.isPressed())
-        	ConfigPopEnchantTags.enabled = !ConfigPopEnchantTags.enabled;
-        
-        if(ForgeModPopEnchantTagsRevived.toggleBooks.isPressed())
-        	ConfigPopEnchantTags.showBooks = !ConfigPopEnchantTags.showBooks;
-        
-        ConfigPopEnchantTags.sync();
+		boolean sync = false;
+		
+		if (PopEnchantTagsRevived.toggleTags.isPressed())
+		{
+			PopEnchantTagsConfig.enabled = !PopEnchantTagsConfig.enabled;
+			sync = true;
+		}
+		
+		if(PopEnchantTagsRevived.toggleBooks.isPressed())
+		{
+			PopEnchantTagsConfig.showBooks = !PopEnchantTagsConfig.showBooks;
+			sync = true;
+		}
+		
+		if (sync)
+			PopEnchantTagsConfig.sync();
 	}
 }
