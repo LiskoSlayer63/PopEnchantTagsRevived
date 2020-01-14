@@ -1,0 +1,65 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+[[mods]]
+modId="popenchanttags"
+version="1.2.0"
+displayName="Pop Enchant Tags Revived"
+logoFile="popenchanttags.png"
+credits="Sources written by Shadow_Hawk. Ported to Forge by LiskoSlayer63."
+authors="LiskoSlayer63, Shadow_Hawk"
+description='''
+Check your enchantments without opening your inventory!
+
+-Can be toggled in-game via the settings here or with a keybind
+-Can be adjusted to show either item enchants, book enchants, or both
+-Keybinds are off by default, but you can easily set them from the \"commands\" setting page
+
+
+CHANGELOG:
+1.2.0:
+-added internationalization
+-updated the config panel to utilize an improved interface available after 1.11
+-updated project to be LiteMDK compliant
+-added changelog to the mod description
+
+1.1.1:
+-fixed an issue where multi-line overlapped with the held item tooltips
+
+1.1.0:
+-added support for enchanted books
+-added multi-line support for long enchant lists
+-added config panel
+-added ability to toggle item and book enchants independently
+-added keybinds for item and book toggles
+-added unversioned config file
+-added mod description
+-refactored code for future inter-project compatibility
+-switched to SemVer compliant version numbering
+
+1.0.3:
+-updated to 1.10.r1
+
+1.0.2:
+-updated to 1.9.4
+
+1.0.1:
+-fixed side by side compatibility with ArmorsHUD
+
+1.0.0:
+-initial release for 1.9
+
+'''
+
+[[dependencies.popenchanttags]]
+modId="forge"
+mandatory=true
+versionRange="[25,)"
+ordering="NONE"
+side="CLIENT"
+
+[[dependencies.popenchanttags]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.13.2]"
+ordering="NONE"
+side="CLIENT"

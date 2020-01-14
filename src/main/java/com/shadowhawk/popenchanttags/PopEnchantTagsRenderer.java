@@ -1,5 +1,7 @@
 package com.shadowhawk.popenchanttags;
 
+import com.shadowhawk.popenchanttags.config.PopEnchantTagsConfig;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -7,9 +9,11 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 //keep for 1.8.9 updates
 //import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class PopEnchantTagsRenderer 
 {
@@ -36,13 +40,13 @@ public class PopEnchantTagsRenderer
 	
 	public void render(int screenWidth, int screenHeight)
 	{
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 
 		if (mc.player != null && (PopEnchantTagsConfig.enabled || PopEnchantTagsConfig.showBooks))
 		{
 			ItemStack items = mc.player.inventory.getCurrentItem();
 
-			if (items != null && items.hasTagCompound())
+			if (items != null && items.hasTag())
 			{
 				int transparency = (int)(remainingHighlightTicks * 256.0F / 10.0F);
 
@@ -63,9 +67,9 @@ public class PopEnchantTagsRenderer
 					int enchantCount = 0;
 					int entriesPerLine = 0;
 
-					if (items.getTagCompound().hasKey("HideFlags", 99))
+					if (items.getTag().contains("HideFlags"))
 					{
-						hidden = (items.getTagCompound().getInteger("HideFlags") & 1) != 0;
+						hidden = (items.getTag().getInt("HideFlags") & 1) != 0;
 					}
 
 					NBTTagList tagList = null;
@@ -85,26 +89,28 @@ public class PopEnchantTagsRenderer
 					if (!hidden && tagList != null)
 					{
 						FontRenderer var13 = mc.fontRenderer;
-						for (int fontRenderer = 0; fontRenderer < tagList.tagCount(); ++fontRenderer)
+						for (int fontRenderer = 0; fontRenderer < tagList.size(); ++fontRenderer)
 						{
 							if(var13.getStringWidth(testString) > screenWidth - 120)
 							{
 								lines++;
 								testString = "";
 							}
-							short enchantmentId = tagList.getCompoundTagAt(fontRenderer).getShort("id");
-							short enchantmentLevel = tagList.getCompoundTagAt(fontRenderer).getShort("lvl");
-							testString = testString + (testString != "" ? " " : "");
-							testString = testString + Enchantment.getEnchantmentByID(enchantmentId).getTranslatedName(enchantmentLevel);
-							//testString = testString + Enchantment.getEnchantmentById(enchantmentId).getTranslatedName(enchantmentLevel);
+							String enchantmentId = tagList.getCompound(fontRenderer).getString("id");
+							short enchantmentLevel = tagList.getCompound(fontRenderer).getShort("lvl");
+							Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchantmentId));
+							
+							testString += testString != "" ? " " : "";
+							testString += enchantment.getDisplayName(enchantmentLevel).getFormattedText();
 						}
-						entriesPerLine = (int)Math.ceil(tagList.tagCount()/lines);
+						entriesPerLine = (int)Math.ceil(tagList.size()/lines);
 						
-						for (int fontRenderer = 0; fontRenderer < tagList.tagCount(); ++fontRenderer)
+						for (int fontRenderer = 0; fontRenderer < tagList.size(); ++fontRenderer)
 						{
-							short enchantmentId = tagList.getCompoundTagAt(fontRenderer).getShort("id");
-							short enchantmentLevel = tagList.getCompoundTagAt(fontRenderer).getShort("lvl");
-
+							String enchantmentId = tagList.getCompound(fontRenderer).getString("id");
+							short enchantmentLevel = tagList.getCompound(fontRenderer).getShort("lvl");
+							
+							Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchantmentId));
 							
 							int currentLine = 0;
 							if(enchantCount == entriesPerLine)
@@ -127,8 +133,8 @@ public class PopEnchantTagsRenderer
 									enchantCount = 0;
 								}
 							}
-							displayStrings[currentLine] = displayStrings[currentLine] + (displayStrings[currentLine] != "" ? " " : "");
-							displayStrings[currentLine] = displayStrings[currentLine] + Enchantment.getEnchantmentByID(enchantmentId).getTranslatedName(enchantmentLevel);
+							displayStrings[currentLine] += displayStrings[currentLine] != "" ? " " : "";
+							displayStrings[currentLine] += enchantment.getDisplayName(enchantmentLevel).applyTextStyle(color).getFormattedText();
 							enchantCount++;
 							currentLine = 0;
 						}	
@@ -137,19 +143,19 @@ public class PopEnchantTagsRenderer
 						int[] y = {0, 0, 0, 0};
 						int j = 0;
 						//if(Minecraft.getMinecraft().theWorld.getWorldInfo().getGameType() == GameType.SURVIVAL || Minecraft.getMinecraft().theWorld.getWorldInfo().getGameType() == GameType.ADVENTURE)
-						if(Minecraft.getMinecraft().playerController.isNotCreative())
+						if(Minecraft.getInstance().playerController.isNotCreative())
 						{
 							j = 1;
 						}
 						for(int i = 0; i <= 3; i++){
-							displayStrings[i] = color + displayStrings[i];
+							//displayStrings[i] = color + displayStrings[i];
 							x[i] = (screenWidth - var13.getStringWidth(displayStrings[i])) / 2;
 							y[i] = screenHeight - 59 - (14 * (i + j));
 						}
 
 						GlStateManager.pushMatrix();
 						GlStateManager.enableBlend();
-						GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+						GlStateManager.blendFuncSeparate(770, 771, 1, 0);
 						for(int i = 0; i <= 3; i++){
 							var13.drawStringWithShadow(displayStrings[i], (float)x[i], (float)y[i], 16777215 + (transparency << 24));
 						}
@@ -163,7 +169,7 @@ public class PopEnchantTagsRenderer
 	
 	public void tick(Minecraft minecraft)
 	{
-		if (minecraft.inGameHasFocus && minecraft.player != null)
+		if (minecraft.isGameFocused() && minecraft.player != null)
 		{
 			ItemStack items = minecraft.player.inventory.getCurrentItem();
 
@@ -171,7 +177,7 @@ public class PopEnchantTagsRenderer
 			{
 				remainingHighlightTicks = 0.0F;
 			}
-			else if (highlightingItemStack != null && items.getItem() == highlightingItemStack.getItem() && ItemStack.areItemStackTagsEqual(items, highlightingItemStack) && (items.isItemStackDamageable() || items.getMetadata() == highlightingItemStack.getMetadata()))
+			else if (highlightingItemStack != null && items.getItem() == highlightingItemStack.getItem() && ItemStack.areItemStackTagsEqual(items, highlightingItemStack) && (items.isDamageable() || items.equals(highlightingItemStack, false)))
 			{
 				if (remainingHighlightTicks > 0.0F)
 				{

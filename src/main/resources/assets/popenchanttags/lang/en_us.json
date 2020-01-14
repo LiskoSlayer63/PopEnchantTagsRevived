@@ -1,0 +1,9 @@
+{
+    "popenchanttags.key.toggle_tags": "Toggle Pop Enchant Tags",
+    "popenchanttags.key.toggle_books": "Toggle Enchanted Book Tags",
+
+    "popenchanttags.config.enabled": "Enabled",
+    "popenchanttags.config.enabled.tooltip": "Enables the Pop Enchant Tags",
+    "popenchanttags.config.show_books": "Show Books",
+    "popenchanttags.config.show_books.tooltip": "Show tags also on books"
+}

@@ -1,7 +1,0 @@
-key.popenchanttagsrevived.toggle_tags=Toggle Pop Enchant Tags
-key.popenchanttagsrevived.toggle_books=Toggle Enchanted Book Tags
-
-gui.popenchanttagsrevived.config.enabled=Enabled
-gui.popenchanttagsrevived.config.enabled.tooltip=Enables the Pop Enchant Tags
-gui.popenchanttagsrevived.config.show_books=Show Books
-gui.popenchanttagsrevived.config.show_books.tooltip=Show tags also on books
