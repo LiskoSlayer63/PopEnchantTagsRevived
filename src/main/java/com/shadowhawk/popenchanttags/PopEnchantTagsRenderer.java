@@ -1,14 +1,14 @@
 package com.shadowhawk.popenchanttags;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.shadowhawk.popenchanttags.config.PopEnchantTagsConfig;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.ItemEnchantedBook;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 //keep for 1.8.9 updates
 //import net.minecraft.util.EnumChatFormatting;
@@ -72,14 +72,14 @@ public class PopEnchantTagsRenderer
 						hidden = (items.getTag().getInt("HideFlags") & 1) != 0;
 					}
 
-					NBTTagList tagList = null;
+					ListNBT tagList = null;
 					if(PopEnchantTagsConfig.enabled)
 					{
 						tagList = items.getEnchantmentTagList();
 					}
-					if((items.getItem() instanceof ItemEnchantedBook) && PopEnchantTagsConfig.showBooks)
+					if((items.getItem() instanceof EnchantedBookItem) && PopEnchantTagsConfig.showBooks)
 					{
-						tagList = ItemEnchantedBook.getEnchantments(items);
+						tagList = EnchantedBookItem.getEnchantments(items);
 						color = TextFormatting.YELLOW;
 						//keep for 1.8.9 updates
 						//color = EnumChatFormatting.YELLOW;

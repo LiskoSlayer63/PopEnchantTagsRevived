@@ -10,7 +10,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;;
+
 
 @EventBusSubscriber(modid = PopEnchantTags.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
 public class ClientEvents 
