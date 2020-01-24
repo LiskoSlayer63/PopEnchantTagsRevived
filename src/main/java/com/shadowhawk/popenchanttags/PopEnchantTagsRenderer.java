@@ -1,6 +1,6 @@
 package com.shadowhawk.popenchanttags;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.shadowhawk.popenchanttags.config.PopEnchantTagsConfig;
 
 import net.minecraft.client.Minecraft;
@@ -153,14 +153,14 @@ public class PopEnchantTagsRenderer
 							y[i] = screenHeight - 59 - (14 * (i + j));
 						}
 
-						GlStateManager.pushMatrix();
-						GlStateManager.enableBlend();
-						GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+						RenderSystem.pushMatrix();
+						RenderSystem.enableBlend();
+						RenderSystem.blendFuncSeparate(770, 771, 1, 0);
 						for(int i = 0; i <= 3; i++){
 							var13.drawStringWithShadow(displayStrings[i], (float)x[i], (float)y[i], 16777215 + (transparency << 24));
 						}
-						GlStateManager.disableBlend();
-						GlStateManager.popMatrix();
+						RenderSystem.disableBlend();
+						RenderSystem.popMatrix();
 					}
 				}
 			}
