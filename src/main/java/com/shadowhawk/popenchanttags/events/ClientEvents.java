@@ -24,9 +24,9 @@ public class ClientEvents
 		Minecraft minecraft = Minecraft.getInstance();
 		PopEnchantTags instance = PopEnchantTags.instance;
 
-		instance.renderer.render(minecraft.mainWindow.getScaledWidth(), minecraft.mainWindow.getScaledHeight());
+		instance.renderer.render(minecraft.getMainWindow().getScaledWidth(), minecraft.getMainWindow().getScaledHeight());
 		
-		Logger.debug("Width: " + minecraft.mainWindow.getScaledWidth() + ", Height: " + minecraft.mainWindow.getScaledHeight() );
+		Logger.debug("Width: " + minecraft.getMainWindow().getScaledWidth() + ", Height: " + minecraft.getMainWindow().getScaledHeight() );
 	}
 
 	@SubscribeEvent
