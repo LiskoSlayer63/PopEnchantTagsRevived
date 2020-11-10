@@ -1,5 +1,6 @@
 modLoader="javafml"
-loaderVersion="[31,)"
+loaderVersion="[34,)"
+license="I don't actually know"
 [[mods]]
 modId="popenchanttags"
 version="1.2.0"
@@ -53,13 +54,13 @@ CHANGELOG:
 [[dependencies.popenchanttags]]
 modId="forge"
 mandatory=true
-versionRange="[31,)"
+versionRange="[34,)"
 ordering="NONE"
 side="CLIENT"
 
 [[dependencies.popenchanttags]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.15.2]"
+versionRange="[1.16.3]"
 ordering="NONE"
 side="CLIENT"

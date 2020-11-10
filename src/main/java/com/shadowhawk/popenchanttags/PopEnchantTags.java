@@ -41,7 +41,7 @@ public class PopEnchantTags
 	    
 	    ModLoadingContext.get().registerConfig(Type.COMMON, ConfigHelper.SPEC);
 	    
-	    DistExecutor.runWhenOn(Dist.CLIENT, ()->()-> {
+	    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()-> {
 	    	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
 	    });
 	}

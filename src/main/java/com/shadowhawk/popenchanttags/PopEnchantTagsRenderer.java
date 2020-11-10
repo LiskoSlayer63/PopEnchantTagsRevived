@@ -1,5 +1,6 @@
 package com.shadowhawk.popenchanttags;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.shadowhawk.popenchanttags.config.PopEnchantTagsConfig;
 
@@ -38,7 +39,7 @@ public class PopEnchantTagsRenderer
 		return PopEnchantTagsConfig.showBooks;
 	}
 	
-	public void render(int screenWidth, int screenHeight)
+	public void render(MatrixStack matrixStack, int screenWidth, int screenHeight)
 	{
 		Minecraft mc = Minecraft.getInstance();
 
@@ -101,7 +102,7 @@ public class PopEnchantTagsRenderer
 							Enchantment enchantment = ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation(enchantmentId));
 							
 							testString += testString != "" ? " " : "";
-							testString += enchantment.getDisplayName(enchantmentLevel).getFormattedText();
+							testString += enchantment.getDisplayName(enchantmentLevel).getString();
 						}
 						entriesPerLine = (int)Math.ceil(tagList.size()/lines);
 						
@@ -134,7 +135,7 @@ public class PopEnchantTagsRenderer
 								}
 							}
 							displayStrings[currentLine] += displayStrings[currentLine] != "" ? " " : "";
-							displayStrings[currentLine] += enchantment.getDisplayName(enchantmentLevel).applyTextStyle(color).getFormattedText();
+							displayStrings[currentLine] += color + enchantment.getDisplayName(enchantmentLevel).getString();
 							enchantCount++;
 							currentLine = 0;
 						}	
@@ -153,14 +154,14 @@ public class PopEnchantTagsRenderer
 							y[i] = screenHeight - 59 - (14 * (i + j));
 						}
 
-						RenderSystem.pushMatrix();
+						//RenderSystem.pushMatrix();
 						RenderSystem.enableBlend();
 						RenderSystem.blendFuncSeparate(770, 771, 1, 0);
 						for(int i = 0; i <= 3; i++){
-							var13.drawStringWithShadow(displayStrings[i], (float)x[i], (float)y[i], 16777215 + (transparency << 24));
+							var13.drawStringWithShadow(matrixStack, displayStrings[i], (float)x[i], (float)y[i], 16777215 + (transparency << 24));
 						}
 						RenderSystem.disableBlend();
-						RenderSystem.popMatrix();
+						//RenderSystem.popMatrix();
 					}
 				}
 			}
