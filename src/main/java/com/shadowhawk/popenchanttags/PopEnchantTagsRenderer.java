@@ -154,14 +154,14 @@ public class PopEnchantTagsRenderer
 							y[i] = screenHeight - 59 - (14 * (i + j));
 						}
 
-						//RenderSystem.pushMatrix();
+						RenderSystem.pushMatrix();
 						RenderSystem.enableBlend();
 						RenderSystem.blendFuncSeparate(770, 771, 1, 0);
 						for(int i = 0; i <= 3; i++){
 							var13.drawStringWithShadow(matrixStack, displayStrings[i], (float)x[i], (float)y[i], 16777215 + (transparency << 24));
 						}
 						RenderSystem.disableBlend();
-						//RenderSystem.popMatrix();
+						RenderSystem.popMatrix();
 					}
 				}
 			}
