@@ -135,7 +135,7 @@ public class PopEnchantTagsRenderer
 								}
 							}
 							displayStrings[currentLine] += displayStrings[currentLine] != "" ? " " : "";
-							displayStrings[currentLine] += color + enchantment.getDisplayName(enchantmentLevel).getString();
+							displayStrings[currentLine] += color + "" + TextFormatting.ITALIC + enchantment.getDisplayName(enchantmentLevel).getString();
 							enchantCount++;
 							currentLine = 0;
 						}	

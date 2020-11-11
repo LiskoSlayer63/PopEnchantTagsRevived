@@ -17,7 +17,7 @@ import net.minecraftforge.event.TickEvent.ClientTickEvent;;
 public class ClientEvents 
 {
 	@SubscribeEvent
-	public static void onRenderGameOverlay(RenderGameOverlayEvent.Post event) 
+	public static void onRenderGameOverlay(RenderGameOverlayEvent event) 
 	{
 		if (event.isCanceled() || !Minecraft.isGuiEnabled() || !event.getType().equals(ElementType.ALL)) return;
 
