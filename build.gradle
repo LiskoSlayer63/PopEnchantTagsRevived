@@ -18,9 +18,9 @@ repositories {
 	}
 }
 
-version = project.version
-group = project.group
-archivesBaseName = project.name
+version=project.version
+group=project.group
+archivesBaseName="PopEnchantTagsRevived"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
