@@ -1,5 +1,6 @@
 package com.shadowhawk.popenchanttags;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.glfw.GLFW;
 
@@ -10,12 +11,14 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 @Mod(PopEnchantTags.MOD_ID)
 public class PopEnchantTags
@@ -38,7 +41,8 @@ public class PopEnchantTags
 			
 		Logger.init(LogManager.getLogger(MOD_ID));
 		Logger.enableDebug(PopEnchantTagsConfig.DEBUG);
-	    
+		
+		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 	    ModLoadingContext.get().registerConfig(Type.COMMON, ConfigHelper.SPEC);
 	    
 	    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()-> {

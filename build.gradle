@@ -13,7 +13,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
 repositories {
-
+	flatDir {
+		dirs 'mods'
+	}
 }
 
 version = project.version
@@ -88,6 +90,7 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+	compile fg.deobf('worldclock:WorldClock:1.2.1')
 
 }
 

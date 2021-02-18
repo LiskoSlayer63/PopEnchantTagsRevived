@@ -3,7 +3,7 @@ loaderVersion="[34,)"
 license="I don't actually know"
 [[mods]]
 modId="popenchanttags"
-version="1.2.0"
+version="1.2.1"
 displayName="Pop Enchant Tags Revived"
 logoFile="popenchanttags.png"
 credits="Sources written by Shadow_Hawk. Ported to Forge by LiskoSlayer63."
